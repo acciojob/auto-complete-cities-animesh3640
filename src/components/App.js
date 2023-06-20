@@ -1,52 +1,35 @@
 import React, { useState, useEffect } from "react";
-import "./../styles/App.css";
 
-const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
-
-const Autocomplete = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+const App = () => {
+  const suggestions = ["apple", "banana", "cherry", "date", "elderberry", "fig"]
+  const [query, setQuery] = useState("");
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
 
   useEffect(() => {
-    const filteredSuggestions = fruits.filter(
-      (fruit) =>
-        fruit.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
-    );
-    setSuggestions(filteredSuggestions);
-  }, [inputValue]);
+    setTimeout(() => {
+      setFilteredSuggestions(
+        suggestions.filter((suggestion) =>
+          suggestion.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+    }, 500);
+  }, [query, suggestions]);
 
-  const handleChange = (event) => {
-    setInputValue(event.target.value);
+  const handleInputChange = (event) => {
+    setQuery(event.target.value);
   };
 
   return (
-     <div className="container">
-      
-      
-      <div className="autocomplete">
-      <div className="title">
-        <h1>Search item</h1>
-        
-
-      </div>
-      <br />
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleChange}
-        placeholder="Search for a fruit"
-      />
-      <br />
+    <div>
+      <h1>Search item</h1>
+      <input type="text" value={query} onChange={handleInputChange} />
       <ul>
-        {suggestions.map((suggestion) => (
+        {filteredSuggestions.map((suggestion) => (
           <li key={suggestion}>{suggestion}</li>
         ))}
       </ul>
     </div>
-
-     </div>
-    
   );
 };
 
-export default Autocomplete;
+export default App;
